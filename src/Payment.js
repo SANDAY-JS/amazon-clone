@@ -41,6 +41,7 @@ function Payment() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setProcessing(true);
+    setError(null);
 
     const payload = await stripe
       .confirmCardPayment(clientSecret, {
@@ -70,6 +71,11 @@ function Payment() {
         });
 
         history.replace("/orders");
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("エラーが発生しました");
+        setProcessing(false);
       });
   };
 
